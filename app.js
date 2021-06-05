@@ -24,7 +24,9 @@ app.get('/', (req, res) => {
     .lean()
     .then(records => {
       records.forEach(record => record.date = dateToString(record.date))
-      res.render('index', { records })
+      let totalAmount = 0
+      records.forEach(record => totalAmount += record.amount)
+      res.render('index', { records, totalAmount })
     })
     .catch(err => console.error(err))
 })
@@ -45,7 +47,7 @@ app.post('/expense-tracker/new', (req, res) => {
     .catch(err => console.error(err))
 })
 
-app.get('/expense-tracker/:id/edit', (req, res) => {
+app.get('/expense-tracker/:id', (req, res) => {
   const id = req.params.id
   return Record.findById(id)
     .lean()
@@ -53,6 +55,18 @@ app.get('/expense-tracker/:id/edit', (req, res) => {
       const currentDate = dateToString(record.date)
       res.render('edit', { record, currentDate })
     })
+    .catch(err => console.error(err))
+})
+
+app.put('/expense-tracker/:id', (req, res) => {
+  const id = req.params.id
+  const modifiedRecord = req.body
+  return Record.findById(id)
+    .then(record => {
+      [record.name, record.category, record.date, record.amount] = [modifiedRecord.name, modifiedRecord.category, modifiedRecord.date, modifiedRecord.amount]
+      return record.save()
+    })
+    .then(() => res.redirect('/'))
     .catch(err => console.error(err))
 })
 
