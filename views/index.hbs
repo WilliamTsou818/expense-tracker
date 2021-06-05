@@ -25,8 +25,12 @@
       {{#each records}}
       <li class="list-group-item">
         <span>{{ this.name }} {{ this.amount }}元  {{ this.date }}</span>
-        <a class="btn btn-success" href="#" role="button">修改</a>
-        <a class="btn btn-danger" href="#" role="button">刪除</a>
+        <form action="./expense-tracker/{{ this._id }}/edit" method="GET" style="display: inline;">
+          <button class="btn btn-outline-success" type="submit">修改</button>
+        </form>
+        <form action="./expense-tracker/{{ this._id }}?_method=DELETE" method="POST" style="display: inline;">
+          <button class="btn btn-outline-danger" type="submit">刪除</button>
+        </form>
       </li>
       {{/each}}
     </ul>
