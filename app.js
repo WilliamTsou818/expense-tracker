@@ -70,6 +70,14 @@ app.put('/expense-tracker/:id', (req, res) => {
     .catch(err => console.error(err))
 })
 
+app.delete('/expense-tracker/:id', (req, res) => {
+  const id = req.params.id
+  return Record.findById(id)
+    .then(record => record.remove())
+    .then(() => res.redirect('/'))
+    .catch(err => console.error(err))
+})
+
 app.listen(port, () => {
   console.log('Server is running on http://localhost:3000')
 })
