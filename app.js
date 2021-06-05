@@ -14,6 +14,8 @@ require('./config/mongoose')
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
 
+app.use(express.urlencoded({ extended: true }))
+
 
 app.get('/', (req, res) => {
   return Record.find()
@@ -22,6 +24,22 @@ app.get('/', (req, res) => {
       records.forEach(record => record.date = dateToString(record.date))
       res.render('index', { records })
     })
+    .catch(err => console.error(err))
+})
+
+app.get('/expense-tracker/new', (req, res) => {
+  res.render('new')
+})
+
+app.post('/expense-tracker/new', (req, res) => {
+  const record = req.body
+  return Record.create({ 
+    name: record.name,
+    date: record.date,
+    category: record.category,
+    amount: record.amount 
+  })
+    .then(() => res.redirect('/'))
     .catch(err => console.error(err))
 })
 
