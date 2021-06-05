@@ -2,6 +2,8 @@
 const express = require('express')
 const app = express()
 const exphbs = require('express-handlebars')
+const hbshelpers = require('handlebars-helpers');
+const multihelpers = hbshelpers();
 const Record = require('./models/record')
 const methodOverride = require('method-override')
 
@@ -11,7 +13,7 @@ const dateToString = require('./scripts/index')
 require('./config/mongoose')
 
 
-app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
+app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs', helpers: multihelpers }))
 app.set('view engine', 'hbs')
 
 app.use(express.urlencoded({ extended: true }))
@@ -40,6 +42,17 @@ app.post('/expense-tracker/new', (req, res) => {
     amount: record.amount 
   })
     .then(() => res.redirect('/'))
+    .catch(err => console.error(err))
+})
+
+app.get('/expense-tracker/:id/edit', (req, res) => {
+  const id = req.params.id
+  return Record.findById(id)
+    .lean()
+    .then(record => {
+      const currentDate = dateToString(record.date)
+      res.render('edit', { record, currentDate })
+    })
     .catch(err => console.error(err))
 })
 
