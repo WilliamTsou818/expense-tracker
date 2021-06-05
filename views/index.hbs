@@ -1,1 +1,43 @@
-<p>Welcome to my expense tracker</p>
+<div class="container">
+  <div class="d-flex flex-column">
+    <!-- dropdown -->
+    <div class="btn-group">
+      <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false">
+        分類
+      </button>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="#">家居物業</a>
+        <a class="dropdown-item" href="#">交通出行</a>
+        <a class="dropdown-item" href="#">休閒娛樂</a>
+        <a class="dropdown-item" href="#">餐飲食品</a>
+        <a class="dropdown-item" href="#">其他</a>
+      </div>
+    </div>
+
+    <!-- display total amount --> 
+    <div class="total-amount-section m-5">
+      <span class="m-5">總金額：</span>
+      <span class="total-amount m-5">150</span>
+    </div>
+
+    <ul class="list-group">
+      <li class="list-group-item">
+        <span>午餐 60元</span>
+        <button type="button" class="btn btn-success">修改</button>
+        <button type="button" class="btn btn-danger">刪除</button>
+      </li>
+      <li class="list-group-item">
+        <span>晚餐 90元</span>
+        <button type="button" class="btn btn-success">修改</button>
+        <button type="button" class="btn btn-danger">刪除</button>
+      </li>
+    </ul>
+
+    <div>
+      <button type="button" class="btn btn-warning mt-4">新增支出</button>
+    </div>
+
+  </div>
+
+</div>
