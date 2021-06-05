@@ -22,16 +22,13 @@
     </div>
 
     <ul class="list-group">
+      {{#each records}}
       <li class="list-group-item">
-        <span>午餐 60元</span>
+        <span>{{ this.name }} {{ this.amount }}元  {{ this.date }}</span>
         <a class="btn btn-success" href="#" role="button">修改</a>
         <a class="btn btn-danger" href="#" role="button">刪除</a>
       </li>
-      <li class="list-group-item">
-        <span>晚餐 90元</span>
-        <a class="btn btn-success" href="#" role="button">修改</a>
-        <a class="btn btn-danger" href="#" role="button">刪除</a>
-      </li>
+      {{/each}}
     </ul>
 
     <div>
