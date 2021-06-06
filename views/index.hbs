@@ -1,7 +1,7 @@
 <div class="container">
   <div class="d-flex flex-column">
     <!-- dropdown -->
-    <form action="/expense-tracker/filter" method="GET">
+    <form action="/records/filter" method="GET">
       <div class="input-group mb-3 container-fluid">
         <select class="form-control ml-2" id="record-category" name="category" onchange="submit()">
           <option value="">所有分類</option>
@@ -32,10 +32,10 @@
           <span>{{ this.name }} {{ this.amount }}元 {{ this.date }}</span>
         </div>
         <div class="button-part">
-          <form action="./expense-tracker/{{ this._id }}" method="GET" style="display: inline;">
+          <form action="./records/{{ this._id }}" method="GET" style="display: inline;">
             <button class="btn btn-outline-success" type="submit">修改</button>
           </form>
-          <form action="./expense-tracker/{{ this._id }}?_method=DELETE" method="POST" style="display: inline;">
+          <form action="./records/{{ this._id }}?_method=DELETE" method="POST" style="display: inline;">
             <button class="btn btn-outline-danger" type="submit">刪除</button>
           </form>
         </div>
@@ -44,7 +44,7 @@
     </ul>
 
     <div>
-      <a href="/expense-tracker/new" class="btn btn-outline-warning btn-lg active mt-3" role="button" aria-pressed="true">新增支出</a>
+      <a href="/records/new" class="btn btn-outline-warning btn-lg active mt-3" role="button" aria-pressed="true">新增支出</a>
     </div>
 
   </div>
