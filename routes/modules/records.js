@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Record = require('../../models/record')
-const { dateToString } = require('../../public/tools')
+const { dateToString } = require('../../public/javascripts/tools')
 
 // filter category
 router.get('/filter', (req, res) => {

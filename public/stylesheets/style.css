@@ -1,0 +1,55 @@
+/* nav section */
+header nav {
+  background-color: #202832;
+}
+
+header nav a {
+  font-weight: 700;
+}
+
+/* header section */
+.filter-category {
+  width: 50%;
+}
+
+.filter-category select {
+  cursor: pointer;
+}
+
+.total-amount-title {
+  font-size: 42px;
+  font-weight: 700;
+  color: #202832;
+}
+
+.total-amount {
+  font-size: 50px;
+  font-weight: 700;
+  color: #f97b37;
+}
+
+/* record section */
+.record-part {
+  flex-basis: 60%;
+}
+
+.record-item i {
+  font-size: 2.5rem;
+  display: inline-block;
+  width: 3rem;
+  text-align: center;
+  margin-right: 0.5rem;
+  color: #379587;
+}
+
+.record-info span {
+  font-size: 1.2rem;
+}
+
+.record-info-name {
+  text-align: center;
+}
+
+.record-amount span{
+  font-size: 1.75rem;
+}

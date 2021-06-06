@@ -1,24 +1,24 @@
 // include modules
 const express = require('express')
-const app = express()
 const exphbs = require('express-handlebars')
-const hbshelpers = require('handlebars-helpers');
-const multihelpers = hbshelpers();
-const Record = require('./models/record')
+const hbshelpers = require('handlebars-helpers')
 const methodOverride = require('method-override')
-
-const port = 3000
-
 const routes = require('./routes')
-const {dateToString} = require('./public/tools')
 require('./config/mongoose')
 
+// express related variables
+const port = 3000
+const app = express()
+const multihelpers = hbshelpers()
 
+// view engine setting
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs', helpers: multihelpers }))
 app.set('view engine', 'hbs')
 
+// middleware and routes setting
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
+app.use(express.static('public'))
 app.use(routes)
 
 app.listen(port, () => {
