@@ -9,7 +9,7 @@ const methodOverride = require('method-override')
 
 const port = 3000
 
-const dateToString = require('./scripts/index')
+const {dateToString} = require('./public/tools')
 require('./config/mongoose')
 
 
@@ -20,20 +20,13 @@ app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 
 app.get('/', (req, res) => {
-  const categoryIcon = {
-    '家居物業': '< i class="fas fa-home" ></i >',
-    '交通出行': '<i class="fas fa-shuttle-van"></i>',
-    '休閒娛樂': '<i class="fas fa-grin-beam"></i>',
-    '餐飲食品': '<i class="fas fa-utensils"></i>',
-    '其他': '<i class="fas fa-pen"></i>'
-  }
   return Record.find()
     .lean()
     .then(records => {
       records.forEach(record => record.date = dateToString(record.date))
       let totalAmount = 0
       records.forEach(record => totalAmount += record.amount)
-      res.render('index', { records, totalAmount, categoryIcon })
+      res.render('index', { records, totalAmount })
     })
     .catch(err => console.error(err))
 })
