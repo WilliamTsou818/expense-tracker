@@ -23,14 +23,23 @@
 
     <ul class="list-group">
       {{#each records}}
-      <li class="list-group-item">
-        <span>{{ this.name }} {{ this.amount }}元  {{ this.date }}</span>
-        <form action="./expense-tracker/{{ this._id }}" method="GET" style="display: inline;">
-          <button class="btn btn-outline-success" type="submit">修改</button>
-        </form>
-        <form action="./expense-tracker/{{ this._id }}?_method=DELETE" method="POST" style="display: inline;">
-          <button class="btn btn-outline-danger" type="submit">刪除</button>
-        </form>
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <div class="record-part">
+          {{#is this.category '家居物業'}} <i class="fas fa-home"></i> {{/is}}
+          {{#is this.category '交通出行'}} <i class="fas fa-shuttle-van"></i> {{/is}}
+          {{#is this.category '休閒娛樂'}} <i class="fas fa-grin-beam"></i> {{/is}}
+          {{#is this.category '餐飲食品'}} <i class="fas fa-utensils"></i> {{/is}}
+          {{#is this.category '其他'}} <i class="fas fa-pen"></i> {{/is}}
+          <span>{{ this.name }} {{ this.amount }}元 {{ this.date }}</span>
+        </div>
+        <div class="button-part">
+          <form action="./expense-tracker/{{ this._id }}" method="GET" style="display: inline;">
+            <button class="btn btn-outline-success" type="submit">修改</button>
+          </form>
+          <form action="./expense-tracker/{{ this._id }}?_method=DELETE" method="POST" style="display: inline;">
+            <button class="btn btn-outline-danger" type="submit">刪除</button>
+          </form>
+        </div>
       </li>
       {{/each}}
     </ul>
