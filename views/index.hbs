@@ -1,19 +1,18 @@
 <div class="container">
   <div class="d-flex flex-column">
     <!-- dropdown -->
-    <div class="btn-group">
-      <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-        aria-expanded="false">
-        分類
-      </button>
-      <div class="dropdown-menu">
-        <a class="dropdown-item" href="#">家居物業</a>
-        <a class="dropdown-item" href="#">交通出行</a>
-        <a class="dropdown-item" href="#">休閒娛樂</a>
-        <a class="dropdown-item" href="#">餐飲食品</a>
-        <a class="dropdown-item" href="#">其他</a>
+    <form action="/expense-tracker/filter" method="GET">
+      <div class="input-group mb-3 container-fluid">
+        <select class="form-control ml-2" id="record-category" name="category" onchange="submit()">
+          <option value="">所有分類</option>
+          <option value="home" {{#is category '家居物業' }} selected {{/is}}>家居物業</option>
+          <option value="trans" {{#is category '交通出行' }} selected {{/is}}>交通出行</option>
+          <option value="fun" {{#is category '休閒娛樂' }} selected {{/is}}>休閒娛樂</option>
+          <option value="food" {{#is category '餐飲食品' }} selected {{/is}}>餐飲食品</option>
+          <option value="others" {{#is category '其他' }} selected {{/is}}>其他</option>
+        </select>
       </div>
-    </div>
+    </form>
 
     <!-- display total amount --> 
     <div class="total-amount-section m-5">

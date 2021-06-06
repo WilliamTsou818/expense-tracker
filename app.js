@@ -31,6 +31,23 @@ app.get('/', (req, res) => {
     .catch(err => console.error(err))
 })
 
+app.get('/expense-tracker/filter', (req, res) => {
+  let category = req.query.category
+  const category_en = ['home', 'trans', 'fun', 'food', 'others']
+  const categoryData = ['家居物業', '交通出行', '休閒娛樂', '餐飲食品', '其他']
+  category = categoryData[category_en.indexOf(category)]
+  if (!category) return res.redirect('/')
+  return Record.find({ category })
+    .lean()
+    .then(records => {
+      records.forEach(record => record.date = dateToString(record.date))
+      let totalAmount = 0
+      records.forEach(record => totalAmount += record.amount)
+      res.render('index', { records, totalAmount, category })
+    }) 
+    
+})
+
 app.get('/expense-tracker/new', (req, res) => {
   res.render('new')
 })
