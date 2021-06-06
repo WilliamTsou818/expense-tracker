@@ -49,7 +49,9 @@ app.get('/expense-tracker/filter', (req, res) => {
 })
 
 app.get('/expense-tracker/new', (req, res) => {
-  res.render('new')
+  let today = new Date()
+  today = dateToString(today)
+  res.render('new', { today })
 })
 
 app.post('/expense-tracker/new', (req, res) => {
