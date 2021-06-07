@@ -1,31 +1,53 @@
-<form action="/records/{{ record._id }}?_method=PUT" method="POST">
+<form action="/records/{{ record._id }}?_method=PUT" method="POST" novalidate>
   <div class="container">
     <div class="input-group mb-3">
       <label for="record-name">支出項目</label>
-      <input type="text" class="form-control ml-2" placeholder="項目名稱" aria-label="Username"
-        aria-describedby="basic-addon1" id="record-name" name="name" value="{{ record.name}}" required>
+      <div>
+        <input type="text" class="form-control ml-2 {{#is validation.name 'false' }} is-invalid {{/is}}" placeholder="項目名稱" aria-label="Username" aria-describedby="basic-addon1"
+          id="record-name" name="name" value="{{ record.name}}" required>
+          <div id="validationServer04Feedback" class="invalid-feedback">
+            請輸入有效內容！
+          </div>
+      </div>
     </div>
 
     <div class="input-group mb-3">
       <label for="record-category">支出類別</label>
-      <select class="form-control ml-2" id="record-category" name="category" required >
-        <option value="家居物業" {{#is record.category '家居物業'}} selected {{/is}}>家居物業</option>
-        <option value="交通出行" {{#is record.category '交通出行'}} selected {{/is}}>交通出行</option>
-        <option value="休閒娛樂" {{#is record.category '休閒娛樂'}} selected {{/is}}>休閒娛樂</option>
-        <option value="餐飲食品" {{#is record.category '餐飲食品'}} selected {{/is}}>餐飲食品</option>
-        <option value="其他" {{#is record.category '其他'}} selected {{/is}}>其他</option>
-      </select>
+      <div>
+        <select class="form-control ml-2 {{#is validation.category 'false' }} is-invalid {{/is}}" id="record-category" name="category" required>
+          <option value="家居物業" {{#is record.category '家居物業' }} selected {{/is}}>家居物業</option>
+          <option value="交通出行" {{#is record.category '交通出行' }} selected {{/is}}>交通出行</option>
+          <option value="休閒娛樂" {{#is record.category '休閒娛樂' }} selected {{/is}}>休閒娛樂</option>
+          <option value="餐飲食品" {{#is record.category '餐飲食品' }} selected {{/is}}>餐飲食品</option>
+          <option value="其他" {{#is record.category '其他' }} selected {{/is}}>其他</option>
+        </select>
+        <div id="validationServer04Feedback" class="invalid-feedback">
+          請輸入有效類別！
+        </div>
+      </div>
+      
     </div>
 
     <div class="input-group mb-3">
       <label for="record-date">支出日期</label>
-      <input type="date" id="record-date" name="date" class="form-control ml-2" value="{{ currentDate }}" required>
+      <div>
+        <input type="date" id="record-date" name="date" class="form-control ml-2 {{#is validation.date 'false' }} is-invalid {{/is}}" value="{{ currentDate }}" required>
+        <div id="validationServer04Feedback" class="invalid-feedback">
+          請輸入有效日期！
+        </div>
+      </div>
     </div>
 
     <div class="input-group mb-3">
       <label for="record-amount mr-2">支出金額</label>
-      <input type="number" class="form-control ml-2" placeholder="金額" aria-label="Username"
-        aria-describedby="basic-addon1" id="record-amount" name="amount" value="{{ record.amount }}" required>
+      <div>
+        <input type="number" class="form-control ml-2 {{#is validation.amount 'false' }} is-invalid {{/is}}" placeholder="金額" aria-label="Username" aria-describedby="basic-addon1"
+          id="record-amount" name="amount" value="{{ record.amount }}" required>
+        <div id="validationServer04Feedback" class="invalid-feedback">
+          請輸入有效金額！
+        </div>
+      </div>
+      
     </div>
 
     <button class="btn btn-outline-success btn-lg active" type="submit" aria-pressed="true">修改支出</button>

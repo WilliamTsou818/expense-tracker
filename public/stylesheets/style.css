@@ -53,3 +53,8 @@ header nav a {
 .record-amount span{
   font-size: 1.75rem;
 }
+
+/* input section */
+.input-group input, .input-group select {
+  width: 15rem;
+}
