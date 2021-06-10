@@ -1,15 +1,23 @@
 const express = require('express')
 const router = express.Router()
 const Record = require('../../models/record')
+const Category = require('../../models/category')
 const { dateToString, inputValidation} = require('../../public/javascripts/tools')
 
 // filter category
 router.get('/filter', (req, res) => {
-  let category = req.query.category
-  const category_en = ['home', 'trans', 'fun', 'food', 'others']
-  const categoryData = ['家居物業', '交通出行', '休閒娛樂', '餐飲食品', '其他']
-  category = categoryData[category_en.indexOf(category)]
+  const categoryEngName = req.query.category
+  const categoryData = {
+    'home': '家居物業',
+    'transportation': '交通出行',
+    'entertainment': '休閒娛樂',
+    'food': '餐飲食品', 
+    'others': '其他'
+  }
+  const category = categoryData[categoryEngName]
+
   if (!category) return res.redirect('/')
+
   return Record.find({ category })
     .lean()
     .then(records => {
@@ -32,7 +40,7 @@ router.get('/new', (req, res) => {
 router.post('/new', (req, res) => {
   const record = req.body
   const validation = inputValidation(record)
-  if (Object.values(validation).includes('false')) {
+  if (Object.values(validation).includes(false)) {
     let today = new Date()
     today = dateToString(today)
     res.render('new', { validation, today, record })
@@ -65,7 +73,7 @@ router.put('/:id', (req, res) => {
   const id = req.params.id
   const modifiedRecord = req.body
   const validation = inputValidation(modifiedRecord)
-  if (Object.values(validation).includes('false')) {
+  if (Object.values(validation).includes(false)) {
     return Record.findById(id)
       .lean()
       .then(record => {
