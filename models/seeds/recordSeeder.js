@@ -28,14 +28,12 @@ const data = [
   }
 ]
 
-db.once('open', () => {
-  data.forEach(record => {
-    Record.create({ 
-      name: record.name,
-      category: record.category,
-      date: record.date,
-      amount: record.amount
+db.once('open', () => { 
+  Record.create(data)
+    .then(() => {
+      console.log('Add record seeder!')
+      return db.close()
     })
-  })
-  console.log('Done!')
+    .catch(err => console.error(err))
+   
 })
