@@ -29,6 +29,16 @@ header nav a {
 }
 
 /* record section */
+
+ul.list-group-striped li:nth-of-type(even){
+  background: #dee2e6;
+}
+
+.list-group-item+.list-group-item {
+  border-top-width: 0;
+  border-bottom-width: 0;
+}
+
 .record-part {
   flex-basis: 60%;
 }
