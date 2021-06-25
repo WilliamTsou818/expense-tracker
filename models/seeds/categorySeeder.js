@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
 const Category = require('../category')
 const db = require('../../config/mongoose')
 
@@ -35,5 +39,5 @@ db.once('open', () => {
       console.log('Add category seeder!')
       return db.close()
     })
-    .catch(err => console.error(err))
+    .catch((err) => console.error(err))
 })
