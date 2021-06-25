@@ -4,12 +4,17 @@ const User = require('../../models/user')
 const passport = require('passport')
 
 router.get('/login', (req, res) => {
-  res.render('login')
+  const error = req.flash('error')
+  if (error[0] === 'Missing credentials') {
+    error[0] = '請輸入有效 Email 與密碼'
+  }
+  res.render('login', { warning_msg: error })
 })
 
 router.post('/login', passport.authenticate('local', {
   successRedirect: '/',
-  failureRedirect: '/users/login'
+  failureRedirect: '/users/login',
+  failureFlash: true
 }))
 
 router.get('/register', (req, res) => {
@@ -18,15 +23,26 @@ router.get('/register', (req, res) => {
 
 router.post('/register', (req, res) => {
   const { name, email, password, comfirmPassword } = req.body
+  const errors = []
+  if (!name || !email || !password || !comfirmPassword) {
+    errors.push({ message: '所有欄位都是必填資料。' })
+  }
   if (password !== comfirmPassword) {
+    errors.push({ message: '密碼與確認密碼不相符。' })
+  }
+  if (errors.length) {
     return res.render('register', {
+      errors,
       name,
-      email,
-      password
+      email
     })
   }
+
   User.findOne({ email }).then((user) => {
-    if (user) return res.render('register', { name, email })
+    if (user) {
+      errors.push({ message: '該 email 已經被註冊。' })
+      return res.render('register', { errors, name, email })
+    }
     User.create({
       name,
       email,
@@ -39,6 +55,7 @@ router.post('/register', (req, res) => {
 
 router.get('/logout', (req, res) => {
   req.logout()
+  req.flash('success_msg', '您已成功登出。')
   res.redirect('/users/login')
 })
 
