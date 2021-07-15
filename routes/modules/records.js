@@ -26,7 +26,10 @@ router.post('/new', (req, res) => {
       category: record.category,
       amount: record.amount
     })
-      .then(() => res.redirect('/'))
+      .then(() => {
+        req.flash('success_messages', '已成功建立支出紀錄！')
+        res.redirect('/')
+      })
       .catch(err => console.error(err))
   }
 })
@@ -64,7 +67,10 @@ router.put('/:id', (req, res) => {
         [record.name, record.category, record.date, record.amount] = [modifiedRecord.name, modifiedRecord.category, modifiedRecord.date, modifiedRecord.amount]
         return record.save()
       })
-      .then(() => res.redirect('/'))
+      .then(() => {
+        req.flash('success_messages', '已成功修改支出紀錄！')
+        res.redirect('/')
+      })
       .catch(err => console.error(err))
   }
 })
@@ -79,7 +85,10 @@ router.delete('/:id', (req, res) => {
       record.isDelete = true
       record.save()
     })
-    .then(() => res.redirect('/'))
+    .then(() => {
+      req.flash('success_messages', '已成功刪除支出紀錄！')
+      res.redirect('/')
+    })
     .catch(err => console.error(err))
 })
 

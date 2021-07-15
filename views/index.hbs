@@ -14,6 +14,13 @@
       </div>
     </form>
 
+    <!-- display flash message -->
+    {{#if success_messages}}
+    <div class="alert alert-success" role="alert">
+      {{ success_messages }}
+    </div>
+    {{/if}}
+
     <!-- display total amount --> 
     <div class="total-amount-section m-3 d-flex justify-content-center align-items-center">
       <span class="total-amount-title m-3">總金額：</span>
