@@ -10,6 +10,7 @@ router.get('/', async (req, res) => {
   categories.forEach(category => categoryData[category.categoryName] = category.categoryIcon)
 
   return Record.find()
+    .sort({ date: 'asc' })
     .lean()
     .then(records => {
       let totalAmount = 0
@@ -31,6 +32,7 @@ router.get('/filter', async (req, res) => {
   if (!category) return res.redirect('/')
 
   return Record.find({ category: category.categoryName })
+    .sort({ date: 'asc' })
     .lean()
     .then(records => {
       let totalAmount = 0
