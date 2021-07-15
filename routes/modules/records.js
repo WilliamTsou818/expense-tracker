@@ -1,33 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Record = require('../../models/record')
-const Category = require('../../models/category')
 const { dateToString, inputValidation} = require('../../public/javascripts/tools')
-
-// filter category
-router.get('/filter', (req, res) => {
-  const categoryEngName = req.query.category
-  const categoryData = {
-    'home': '家居物業',
-    'transportation': '交通出行',
-    'entertainment': '休閒娛樂',
-    'food': '餐飲食品', 
-    'others': '其他'
-  }
-  const category = categoryData[categoryEngName]
-
-  if (!category) return res.redirect('/')
-
-  return Record.find({ category })
-    .lean()
-    .then(records => {
-      records.forEach(record => record.date = dateToString(record.date))
-      let totalAmount = 0
-      records.forEach(record => totalAmount += record.amount)
-      res.render('index', { records, totalAmount, category })
-    })
-
-})
 
 // new page
 router.get('/new', (req, res) => {

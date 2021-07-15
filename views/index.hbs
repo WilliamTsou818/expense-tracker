@@ -1,7 +1,7 @@
 <div class="container">
   <div class="d-flex flex-column">
     <!-- dropdown -->
-    <form action="/records/filter" method="GET">
+    <form action="/filter" method="GET">
       <div class="input-group filter-category mb-3 container-fluid">
         <select class="form-control ml-2" id="record-category" name="category" onchange="submit()">
           <option value="">所有分類</option>
@@ -25,11 +25,7 @@
       <li class="list-group-item d-flex justify-content-between align-items-center">
         <div class="record-part d-flex align-items-center justify-content-between">
           <div class="record-item d-flex align-items-center">
-            {{#is this.category '家居物業'}} <i class="fas fa-home"></i> {{/is}}
-            {{#is this.category '交通出行'}} <i class="fas fa-shuttle-van"></i> {{/is}}
-            {{#is this.category '休閒娛樂'}} <i class="fas fa-grin-beam"></i> {{/is}}
-            {{#is this.category '餐飲食品'}} <i class="fas fa-utensils"></i> {{/is}}
-            {{#is this.category '其他'}} <i class="fas fa-pen"></i> {{/is}}
+            <i class="{{ this.categoryIcon }}"></i>
             <div class="record-info d-flex flex-column">
               <span class="record-info-name">{{ this.name }}</span>
               <span class="record-info-date">{{ this.date }}</span>

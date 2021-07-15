@@ -20,7 +20,7 @@ const categoryData = [
   {
     categoryName: '餐飲食品',
     categoryEngName: 'food',
-    categoryIcon: 'fas a-utensils'
+    categoryIcon: 'fas fa-utensils'
   },
   {
     categoryName: '其他',
