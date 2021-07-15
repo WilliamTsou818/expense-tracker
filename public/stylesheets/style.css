@@ -16,7 +16,7 @@ header nav a {
   cursor: pointer;
 }
 
-.total-amount-title {
+.total-amount-title, .new-page-title, .edit-page-title {
   font-size: 42px;
   font-weight: 700;
   color: #202832;
@@ -68,3 +68,4 @@ ul.list-group-striped li:nth-of-type(even){
 .input-group input, .input-group select {
   width: 15rem;
 }
+
