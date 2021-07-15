@@ -16,6 +16,11 @@ const recordSchema = new Schema({
   amount: {
     type: Number,
     required: true
+  },
+  isDelete: {
+    type: Boolean,
+    default: false,
+    required: true
   }
 })
 

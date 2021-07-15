@@ -1,5 +1,5 @@
 const express = require('express')
-const { Mongoose } = require('mongoose')
+const mongoose = require('mongoose')
 const router = express.Router()
 const Record = require('../../models/record')
 const { dateToString, inputValidation} = require('../../public/javascripts/tools')
@@ -34,7 +34,7 @@ router.post('/new', (req, res) => {
 // edit page
 router.get('/:id', (req, res) => {
   const id = req.params.id
-  if (!Mongoose.Types.ObjectId.isValid(id)) return res.redirect('back')
+  if (!mongoose.Types.ObjectId.isValid(id)) return res.redirect('back')
   return Record.findById(id)
     .lean()
     .then(record => {
@@ -72,11 +72,12 @@ router.put('/:id', (req, res) => {
 // delete record
 router.delete('/:id', (req, res) => {
   const id = req.params.id
-  if (!Mongoose.Types.ObjectId.isValid(id)) return res.redirect('back')
+  if (!mongoose.Types.ObjectId.isValid(id)) return res.redirect('back')
   return Record.findById(id)
     .then(record => {
       if (!record) return res.redirect('back')
-      record.remove()
+      record.isDelete = true
+      record.save()
     })
     .then(() => res.redirect('/'))
     .catch(err => console.error(err))

@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
   const categoryData = {}
   categories.forEach(category => categoryData[category.categoryName] = category.categoryIcon)
 
-  return Record.find()
+  return Record.find({ isDelete: false })
     .sort({ date: 'asc' })
     .lean()
     .then(records => {
@@ -31,7 +31,7 @@ router.get('/filter', async (req, res) => {
 
   if (!category) return res.redirect('/')
 
-  return Record.find({ category: category.categoryName })
+  return Record.find({ category: category.categoryName, isDelete: false })
     .sort({ date: 'asc' })
     .lean()
     .then(records => {
