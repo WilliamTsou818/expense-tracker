@@ -19,15 +19,16 @@ router.get('/', async (req, res) => {
         totalAmount += record.amount
         record.categoryIcon = categoryData[record.category]
       })
-      res.render('index', { records, totalAmount })
+      res.render('index', { records, totalAmount, categories })
     })
     .catch(err => console.error(err))
 })
 
 // filter by category
 router.get('/filter', async (req, res) => {
-  const categoryEngName = req.query.category
-  const category = await Category.findOne({ categoryEngName })
+  const categoryName = req.query.category
+  const categories = await Category.find().lean()
+  const category = await Category.findOne({ categoryName })
 
   if (!category) return res.redirect('/')
 
@@ -41,7 +42,7 @@ router.get('/filter', async (req, res) => {
         totalAmount += record.amount
         record.categoryIcon = category.categoryIcon
       })
-      res.render('index', { records, totalAmount, category: category.categoryName })
+      res.render('index', { records, totalAmount, currentCategory: category.categoryName, categories })
     })
 
 })

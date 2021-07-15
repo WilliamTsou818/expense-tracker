@@ -5,11 +5,9 @@
       <div class="input-group filter-category mb-3 container-fluid">
         <select class="form-control ml-2" id="record-category" name="category" onchange="submit()">
           <option value="">所有分類</option>
-          <option value="home" {{#is category '家居物業' }} selected {{/is}}>家居物業</option>
-          <option value="transportation" {{#is category '交通出行' }} selected {{/is}}>交通出行</option>
-          <option value="entertainment" {{#is category '休閒娛樂' }} selected {{/is}}>休閒娛樂</option>
-          <option value="food" {{#is category '餐飲食品' }} selected {{/is}}>餐飲食品</option>
-          <option value="others" {{#is category '其他' }} selected {{/is}}>其他</option>
+          {{#each categories}}
+          <option value="{{ this.categoryName }}" {{#is this.categoryName ../currentCategory }} selected {{/is}}>{{ this.categoryName }}</option>
+          {{/each}}
         </select>
       </div>
     </form>

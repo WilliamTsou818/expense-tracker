@@ -20,11 +20,9 @@
           <div>
             <select class="form-control ml-2 {{#is validation.category false }} is-invalid {{/is}}" id="record-category"
               name="category" required>
-              <option value="家居物業">家居物業</option>
-              <option value="交通出行">交通出行</option>
-              <option value="休閒娛樂">休閒娛樂</option>
-              <option value="餐飲食品">餐飲食品</option>
-              <option value="其他">其他</option>
+              {{#each categories}}
+              <option value="{{ this.categoryName }}">{{ this.categoryName }}</option>
+              {{/each}}
             </select>
             <div id="validationServer04Feedback" class="invalid-feedback">
               請輸入有效類別！

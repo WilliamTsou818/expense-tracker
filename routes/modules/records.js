@@ -2,13 +2,15 @@ const express = require('express')
 const mongoose = require('mongoose')
 const router = express.Router()
 const Record = require('../../models/record')
+const Category = require('../../models/category')
 const { dateToString, inputValidation} = require('../../public/javascripts/tools')
 
 // new page
-router.get('/new', (req, res) => {
+router.get('/new', async (req, res) => {
   let today = new Date()
+  const categories = await Category.find().lean()
   today = dateToString(today)
-  res.render('new', { today })
+  res.render('new', { today, categories })
 })
 
 // add new record
@@ -35,15 +37,16 @@ router.post('/new', (req, res) => {
 })
 
 // edit page
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   const id = req.params.id
+  const categories = await Category.find().lean()
   if (!mongoose.Types.ObjectId.isValid(id)) return res.redirect('back')
   return Record.findById(id)
     .lean()
     .then(record => {
       if (!record) return res.redirect('back')
       const currentDate = dateToString(record.date)
-      res.render('edit', { record, currentDate })
+      res.render('edit', { record, currentDate, categories })
     })
     .catch(err => console.error(err))
 })
