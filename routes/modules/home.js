@@ -25,37 +25,56 @@ router.get('/', async (req, res) => {
     .catch(err => console.error(err))
 })
 
-// filter by category
+// filter by category or month
 router.get('/filter', async (req, res) => {
   const categoryName = req.query.category
   const monthFiltered = req.query.month
   const categories = await Category.find().lean()
-  let category = await Category.findOne({ categoryName })
 
-  if (category === null) category = { categoryName: '' }
-  if (!category && !monthFiltered) return res.redirect('/')
+  // if category is selected
+  if (categoryName) {
+    const category = await Category.findOne({ categoryName })
+    let records = await Record.find({ category: category.categoryName, isDelete: false }).sort({ date: 'asc' }).lean()
 
-  return Record.find({ category: category.categoryName, isDelete: false })
-    .sort({ date: 'asc' })
-    .lean()
-    .then(records => {
-      // filter by month
-      if (monthFiltered) {
-        records = records.filter((record) => {
-          const date = record.date
-          const recordMonth = String(date.getMonth() + 1)
-          return recordMonth === monthFiltered
-        })
-      }
-
-      let totalAmount = 0
-      records = records.map(record => {
-        record.date = dateToString(record.date)
-        totalAmount += record.amount
-        record.categoryIcon = category.categoryIcon
+    // filter by month
+    if (monthFiltered) {
+      records = records.filter((record) => {
+        const date = record.date
+        const recordMonth = String(date.getMonth() + 1)
+        return recordMonth === monthFiltered
       })
-      res.render('index', { records, totalAmount, currentCategory: category.categoryName, categories, monthFiltered })
+    }
+
+    let totalAmount = 0
+    records.map(record => {
+      record.date = dateToString(record.date)
+      totalAmount += record.amount
+      record.categoryIcon = category.categoryIcon
     })
+    return res.render('index', { records, totalAmount, currentCategory: category.categoryName, categories, monthFiltered })
+  }
+
+  // if category is not selected
+  let records = await Record.find({ isDelete: false }).sort({ date: 'asc' }).lean()
+  const categoryData = {}
+  categories.forEach(category => categoryData[category.categoryName] = category.categoryIcon)
+
+  // filter by month
+  if (monthFiltered) {
+    records = records.filter((record) => {
+      const date = record.date
+      const recordMonth = String(date.getMonth() + 1)
+      return recordMonth === monthFiltered
+    })
+  }
+
+  let totalAmount = 0
+  records.map(record => {
+    record.date = dateToString(record.date)
+    totalAmount += record.amount
+    record.categoryIcon = categoryData[record.category]
+  })
+  res.render('index', { records, totalAmount, categories, monthFiltered })
 })
 
 module.exports = router
