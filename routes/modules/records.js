@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const router = express.Router()
 const Record = require('../../models/record')
 const Category = require('../../models/category')
-const { dateToString, inputValidation} = require('../../public/javascripts/tools')
+const { dateToString, inputValidation } = require('../../public/javascripts/tools')
 
 // new page
 router.get('/new', async (req, res) => {
