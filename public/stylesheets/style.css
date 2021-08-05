@@ -9,10 +9,18 @@ header nav a {
 
 /* header section */
 .filter-category {
-  width: 50%;
+  width: 40%;
 }
 
 .filter-category select {
+  cursor: pointer;
+}
+
+.filter-month {
+  width: 40%;
+}
+
+.filter-month select {
   cursor: pointer;
 }
 
@@ -67,7 +75,7 @@ ul.list-group-striped li:nth-of-type(even){
 .record-merchant {
   box-sizing: border-box;
   display: inline-block;
-  width: 5rem;
+  width: 7rem;
 }
 
 .fa-shopping-cart {

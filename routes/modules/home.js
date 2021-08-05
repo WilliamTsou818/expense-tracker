@@ -27,24 +27,33 @@ router.get('/', async (req, res) => {
 // filter by category
 router.get('/filter', async (req, res) => {
   const categoryName = req.query.category
+  const monthFiltered = req.query.month
   const categories = await Category.find().lean()
   const category = await Category.findOne({ categoryName })
 
-  if (!category) return res.redirect('/')
+  if (!category && !monthFiltered) return res.redirect('/')
 
   return Record.find({ category: category.categoryName, isDelete: false })
     .sort({ date: 'asc' })
     .lean()
     .then(records => {
+      // filter by month
+      if (monthFiltered) {
+        records = records.filter((record) => {
+          const date = record.date
+          const recordMonth = String(date.getMonth() + 1)
+          return recordMonth === monthFiltered
+        })
+      }
+
       let totalAmount = 0
-      records.map(record => {
+      records = records.map(record => {
         record.date = dateToString(record.date)
         totalAmount += record.amount
         record.categoryIcon = category.categoryIcon
       })
       res.render('index', { records, totalAmount, currentCategory: category.categoryName, categories })
     })
-
 })
 
 module.exports = router
