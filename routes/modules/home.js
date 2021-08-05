@@ -29,8 +29,9 @@ router.get('/filter', async (req, res) => {
   const categoryName = req.query.category
   const monthFiltered = req.query.month
   const categories = await Category.find().lean()
-  const category = await Category.findOne({ categoryName })
+  let category = await Category.findOne({ categoryName })
 
+  if (category === null) category = { categoryName: '' }
   if (!category && !monthFiltered) return res.redirect('/')
 
   return Record.find({ category: category.categoryName, isDelete: false })
@@ -52,7 +53,7 @@ router.get('/filter', async (req, res) => {
         totalAmount += record.amount
         record.categoryIcon = category.categoryIcon
       })
-      res.render('index', { records, totalAmount, currentCategory: category.categoryName, categories })
+      res.render('index', { records, totalAmount, currentCategory: category.categoryName, categories, monthFiltered })
     })
 })
 
