@@ -6,12 +6,17 @@ const methodOverride = require('method-override')
 const session = require('express-session')
 const flash = require('connect-flash')
 const routes = require('./routes')
-const flash = require('connect-flash')
 const usePassport = require('./config/passport')
+
+// include .env
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
 require('./config/mongoose')
 
 // express related variables
-const port = process.env.PORT || 3000
+const PORT = process.env.PORT
 const app = express()
 const multihelpers = hbshelpers()
 
@@ -25,7 +30,7 @@ app.use(methodOverride('_method'))
 app.use(express.static('public'))
 
 app.use(session({
-  secret: 'expenseTracker',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true
 }))
@@ -48,6 +53,6 @@ app.use((req, res, next) => {
 
 app.use(routes)
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`)
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`)
 })
