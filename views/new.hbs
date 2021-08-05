@@ -39,7 +39,6 @@
               請輸入有效日期！
             </div>
           </div>
-    
         </div>
     
         <div class="input-group mb-3 align-items-center justify-content-center">
@@ -53,6 +52,18 @@
             </div>
           </div>
         </div>
+
+        <div class="input-group mb-3">
+          <label for="record-merchant mr-2">消費店家</label>
+          <div>
+            <input type="text" class="form-control ml-2 {{#is validation.merchant false }} is-invalid {{/is}}" placeholder="店家"
+              aria-label="merchant" aria-describedby="basic-addon1" id="record-amount" name="merchant" {{#if validation.amount}} value="{{ record.merchant}}" {{/if}} required>
+            <div id="validationServer04Feedback" class="invalid-feedback">
+              請輸入有效店家！
+            </div>
+          </div>
+        </div>
+
         <div class="d-flex justify-content-center">
           <button class="btn btn-outline-success btn-lg active mx-2" type="submit" aria-pressed="true">新增支出</button>
           <a href="/" class="btn btn-outline-secondary btn-lg active mx-2" role="button" aria-pressed="true">回到首頁</a>

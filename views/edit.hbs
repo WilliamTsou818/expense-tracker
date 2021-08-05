@@ -46,10 +46,20 @@
           <label for="record-amount mr-2">支出金額</label>
           <div>
             <input type="number" class="form-control ml-2 {{#is validation.amount false }} is-invalid {{/is}}" placeholder="金額"
-              aria-label="Username" aria-describedby="basic-addon1" id="record-amount" name="amount" value="{{ record.amount }}"
-              required>
+              aria-label="Username" aria-describedby="basic-addon1" id="record-amount" name="amount" value="{{ record.amount }}" required>
             <div id="validationServer04Feedback" class="invalid-feedback">
               請輸入有效金額！
+            </div>
+          </div>
+        </div>
+
+        <div class="input-group mb-3 align-items-center justify-content-center">
+          <label for="record-merchant mr-2">消費店家</label>
+          <div>
+            <input type="text" class="form-control ml-2 {{#is validation.merchant false }} is-invalid {{/is}}" placeholder="店家"
+              aria-label="merchant" aria-describedby="basic-addon1" id="record-amount" name="merchant" value="{{ record.merchant}}" required>
+            <div id="validationServer04Feedback" class="invalid-feedback">
+              請輸入有效店家！
             </div>
           </div>
         </div>
