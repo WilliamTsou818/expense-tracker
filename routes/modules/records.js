@@ -16,6 +16,7 @@ router.get('/new', async (req, res) => {
 // add new record
 router.post('/new', (req, res) => {
   const record = req.body
+  console.log(record)
   const validation = inputValidation(record)
   if (Object.values(validation).includes(false)) {
     let today = new Date()
@@ -26,7 +27,8 @@ router.post('/new', (req, res) => {
       name: record.name,
       date: record.date,
       category: record.category,
-      amount: record.amount
+      amount: record.amount,
+      merchant: record.merchant
     })
       .then(() => {
         req.flash('success_messages', '已成功建立支出紀錄！')
@@ -67,7 +69,7 @@ router.put('/:id', (req, res) => {
   } else {
     return Record.findById(id)
       .then(record => {
-        [record.name, record.category, record.date, record.amount] = [modifiedRecord.name, modifiedRecord.category, modifiedRecord.date, modifiedRecord.amount]
+        [record.name, record.category, record.date, record.amount, record.merchant] = [modifiedRecord.name, modifiedRecord.category, modifiedRecord.date, modifiedRecord.amount, modifiedRecord.merchant]
         return record.save()
       })
       .then(() => {
