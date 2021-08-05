@@ -5,11 +5,12 @@ const Category = require('../../models/category')
 const { dateToString } = require('../../public/javascripts/tools')
 
 router.get('/', async (req, res) => {
+  const userId = req.user._id
   const categories = await Category.find().lean()
   const categoryData = {}
   categories.forEach(category => categoryData[category.categoryName] = category.categoryIcon)
 
-  return Record.find({ isDelete: false })
+  return Record.find({ userId, isDelete: false })
     .sort({ date: 'asc' })
     .lean()
     .then(records => {

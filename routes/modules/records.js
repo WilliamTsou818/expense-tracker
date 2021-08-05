@@ -15,8 +15,8 @@ router.get('/new', async (req, res) => {
 
 // add new record
 router.post('/new', (req, res) => {
+  const userId = req.user._id
   const record = req.body
-  console.log(record)
   const validation = inputValidation(record)
   if (Object.values(validation).includes(false)) {
     let today = new Date()
@@ -28,7 +28,8 @@ router.post('/new', (req, res) => {
       date: record.date,
       category: record.category,
       amount: record.amount,
-      merchant: record.merchant
+      merchant: record.merchant,
+      userId
     })
       .then(() => {
         req.flash('success_messages', '已成功建立支出紀錄！')
@@ -40,10 +41,12 @@ router.post('/new', (req, res) => {
 
 // edit page
 router.get('/:id', async (req, res) => {
-  const id = req.params.id
+  const userId = req.user._id
+  const _id = req.params.id
   const categories = await Category.find().lean()
-  if (!mongoose.Types.ObjectId.isValid(id)) return res.redirect('back')
-  return Record.findById(id)
+
+  if (!mongoose.Types.ObjectId.isValid(_id)) return res.redirect('back')
+  return Record.findOne({ _id, userId })
     .lean()
     .then(record => {
       if (!record) return res.redirect('back')
@@ -55,11 +58,12 @@ router.get('/:id', async (req, res) => {
 
 // edit record
 router.put('/:id', (req, res) => {
-  const id = req.params.id
+  const userId = req.user._id
+  const _id = req.params.id
   const modifiedRecord = req.body
   const validation = inputValidation(modifiedRecord)
   if (Object.values(validation).includes(false)) {
-    return Record.findById(id)
+    return Record.findOne({ _id, userId })
       .lean()
       .then(record => {
         const currentDate = dateToString(record.date)
@@ -67,7 +71,7 @@ router.put('/:id', (req, res) => {
       })
       .catch(err => console.error(err))
   } else {
-    return Record.findById(id)
+    return Record.findOne({ _id, userId })
       .then(record => {
         [record.name, record.category, record.date, record.amount, record.merchant] = [modifiedRecord.name, modifiedRecord.category, modifiedRecord.date, modifiedRecord.amount, modifiedRecord.merchant]
         return record.save()
@@ -82,9 +86,10 @@ router.put('/:id', (req, res) => {
 
 // delete record
 router.delete('/:id', (req, res) => {
-  const id = req.params.id
-  if (!mongoose.Types.ObjectId.isValid(id)) return res.redirect('back')
-  return Record.findById(id)
+  const userId = req.user._id
+  const _id = req.params.id
+  if (!mongoose.Types.ObjectId.isValid(_id)) return res.redirect('back')
+  return Record.findOne({ _id, userId })
     .then(record => {
       if (!record) return res.redirect('back')
       record.isDelete = true
