@@ -5,11 +5,21 @@ const passport = require('passport')
 const bcrypt = require('bcryptjs')
 
 router.get('/login', (req, res) => {
-  const error = req.flash('error')
-  if (error[0] === 'Missing credentials') {
-    error[0] = '請輸入有效 Email 與密碼'
+  const warning_msg = res.locals.warning_msg
+  const errors = req.flash('error')
+  // handle login status authenticator warning message
+  if (warning_msg.length !== 0) {
+    return res.render('login', { warning_msg })
   }
-  res.render('login', { warning_msg: error })
+  // handle login error message
+  if (errors[0]) {
+    errors[0] = { message: errors[0] }
+    if (errors[0].message === 'Missing credentials') {
+      errors[0] = { message: '請輸入有效 Email 與密碼' }
+    }
+    return res.render('login', { errors })
+  }
+  return res.render('login')
 })
 
 router.post('/login', passport.authenticate('local', {
