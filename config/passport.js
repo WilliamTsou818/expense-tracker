@@ -2,6 +2,7 @@ const passport = require('passport')
 const bcrypt = require('bcryptjs')
 const LocalStrategy = require('passport-local').Strategy
 const FacebookStrategy = require('passport-facebook').Strategy
+const GoogleStrategy = require('passport-google-oauth20').Strategy
 const User = require('../models/user')
 
 module.exports = (app) => {
@@ -32,6 +33,30 @@ module.exports = (app) => {
     profileFields: ['email', 'displayName']
   }, (accessToken, refreshToken, profile, done) => {
     const { email, name } = profile._json
+    User.findOne({ email }).then((user) => {
+      if (user) return done(null, user)
+      // 如果不在資料庫，則隨機創立密碼並註冊
+      const randomPassword = Math.random().toString(36).slice(-8)
+      bcrypt
+        .genSalt(10)
+        .then((salt) => bcrypt.hash(randomPassword, salt))
+        .then((hash) => User.create({
+          name,
+          email,
+          password: hash
+        }))
+        .then((user) => done(null, user))
+        .catch((err) => done(err, false))
+    })
+  }))
+  // 設定 google 驗證
+  passport.use(new GoogleStrategy({
+    clientID: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    callbackURL: process.env.CLIENT_CALLBACK
+  }, (accessToken, refreshToken, profile, done) => {
+    const name = profile.displayName
+    const email = profile.emails[0].value
     User.findOne({ email }).then((user) => {
       if (user) return done(null, user)
       // 如果不在資料庫，則隨機創立密碼並註冊

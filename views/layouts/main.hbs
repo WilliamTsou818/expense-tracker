@@ -15,7 +15,9 @@
   <body class="bg-light">
     <header>
       <nav class="navbar navbar-dark justify-content-between">
-        <a class="navbar-brand" href="/">家庭記帳本</a>
+        <a class="navbar-brand" href="/">
+          {{user.name}} 家庭記帳本
+        </a>
         <div class="user-button">
           <a class="navbar-brand" href="/records/new">新增支出</a>
           {{#if isAuthenticated}}
