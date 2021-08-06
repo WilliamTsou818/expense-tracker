@@ -27,6 +27,7 @@ router.get('/', async (req, res) => {
 
 // filter by category or month
 router.get('/filter', async (req, res) => {
+  const userId = req.user._id
   const categoryName = req.query.category
   const monthFiltered = req.query.month
   const categories = await Category.find().lean()
@@ -34,7 +35,7 @@ router.get('/filter', async (req, res) => {
   // if category is selected
   if (categoryName) {
     const category = await Category.findOne({ categoryName })
-    let records = await Record.find({ category: category.categoryName, isDelete: false }).sort({ date: 'asc' }).lean()
+    let records = await Record.find({ userId, category: category.categoryName, isDelete: false }).sort({ date: 'asc' }).lean()
 
     // filter by month
     if (monthFiltered) {
@@ -55,7 +56,7 @@ router.get('/filter', async (req, res) => {
   }
 
   // if category is not selected
-  let records = await Record.find({ isDelete: false }).sort({ date: 'asc' }).lean()
+  let records = await Record.find({ userId, isDelete: false }).sort({ date: 'asc' }).lean()
   const categoryData = {}
   categories.forEach(category => categoryData[category.categoryName] = category.categoryIcon)
 
