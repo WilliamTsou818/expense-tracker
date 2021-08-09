@@ -5,7 +5,7 @@
       <form action="/records/{{ record._id }}?_method=PUT" method="POST" novalidate>
 
         <div class="input-group mb-3 align-items-center justify-content-center">
-          <label for="record-name">支出項目</label>
+          <label for="record-name">支出項目*</label>
           <div>
             <input type="text" class="form-control ml-2 {{#is validation.name false }} is-invalid {{/is}}" placeholder="項目名稱"
               aria-label="Username" aria-describedby="basic-addon1" id="record-name" name="name" value="{{ record.name}}"
@@ -17,7 +17,7 @@
         </div>
         
         <div class="input-group mb-3 align-items-center justify-content-center">
-          <label for="record-category">支出類別</label>
+          <label for="record-category">支出類別*</label>
           <div>
             <select class="form-control ml-2 {{#is validation.category false }} is-invalid {{/is}}" id="record-category"
               name="category" required>
@@ -32,7 +32,7 @@
         </div>
         
         <div class="input-group mb-3 align-items-center  justify-content-center">
-          <label for="record-date">支出日期</label>
+          <label for="record-date">支出日期*</label>
           <div>
             <input type="date" id="record-date" name="date"
               class="form-control ml-2 {{#is validation.date false }} is-invalid {{/is}}" value="{{ currentDate }}" required>
@@ -43,7 +43,7 @@
         </div>
         
         <div class="input-group mb-3 align-items-center justify-content-center">
-          <label for="record-amount mr-2">支出金額</label>
+          <label for="record-amount mr-2">支出金額*</label>
           <div>
             <input type="number" class="form-control ml-2 {{#is validation.amount false }} is-invalid {{/is}}" placeholder="金額"
               aria-label="Username" aria-describedby="basic-addon1" id="record-amount" name="amount" value="{{ record.amount }}" required>
@@ -54,7 +54,7 @@
         </div>
 
         <div class="input-group mb-3 align-items-center justify-content-center">
-          <label for="record-merchant mr-2">消費店家</label>
+          <label for="record-merchant mr-2">消費店家*</label>
           <div>
             <input type="text" class="form-control ml-2 {{#is validation.merchant false }} is-invalid {{/is}}" placeholder="店家"
               aria-label="merchant" aria-describedby="basic-addon1" id="record-amount" name="merchant" value="{{ record.merchant}}" required>

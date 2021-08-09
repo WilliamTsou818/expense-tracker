@@ -14,14 +14,15 @@ router.get('/new', async (req, res) => {
 })
 
 // add new record
-router.post('/new', (req, res) => {
+router.post('/new', async (req, res) => {
   const userId = req.user._id
   const record = req.body
   const validation = inputValidation(record)
   if (Object.values(validation).includes(false)) {
     let today = new Date()
     today = dateToString(today)
-    res.render('new', { validation, today, record })
+    const categories = await Category.find().lean()
+    res.render('new', { validation, today, record, categories })
   } else {
     return Record.create({
       name: record.name,
@@ -57,17 +58,18 @@ router.get('/:id', async (req, res) => {
 })
 
 // edit record
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
   const userId = req.user._id
   const _id = req.params.id
   const modifiedRecord = req.body
   const validation = inputValidation(modifiedRecord)
   if (Object.values(validation).includes(false)) {
+    const categories = await Category.find().lean()
     return Record.findOne({ _id, userId })
       .lean()
       .then(record => {
         const currentDate = dateToString(record.date)
-        res.render('edit', { record, currentDate, validation })
+        res.render('edit', { record, currentDate, validation, categories })
       })
       .catch(err => console.error(err))
   } else {
