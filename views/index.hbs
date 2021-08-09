@@ -6,7 +6,7 @@
         <select class="form-control ml-2" id="record-category" name="category" onchange="submit()">
           <option value="">所有分類</option>
           {{#each categories}}
-          <option value="{{ this.categoryName }}" {{#is this.categoryName ../currentCategory }} selected {{/is}}>{{ this.categoryName }}</option>
+          <option value="{{ this.categoryName }}" {{#is this.categoryName ../categoryFiltered }} selected {{/is}}>{{ this.categoryName }}</option>
           {{/each}}
         </select>
       </div>
