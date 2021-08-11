@@ -10,7 +10,7 @@ router.get('/new', async (req, res) => {
   let today = new Date()
   const categories = await Category.find().lean()
   today = dateToString(today)
-  res.render('new', { today, categories })
+  return res.render('new', { today, categories })
 })
 
 // add new record
@@ -24,7 +24,7 @@ router.post('/new', async (req, res) => {
     const categories = await Category.find().lean()
     res.render('new', { validation, today, record, categories })
   } else {
-    return Record.create({
+    await Record.create({
       name: record.name,
       date: record.date,
       category: record.category,
@@ -32,29 +32,26 @@ router.post('/new', async (req, res) => {
       merchant: record.merchant,
       userId
     })
-      .then(() => {
-        req.flash('success_messages', '已成功建立支出紀錄！')
-        res.redirect('/')
-      })
-      .catch(err => console.error(err))
+    req.flash('success_messages', '已成功建立支出紀錄！')
+    return res.redirect('/')
   }
 })
 
 // edit page
 router.get('/:id', async (req, res) => {
-  const userId = req.user._id
-  const _id = req.params.id
-  const categories = await Category.find().lean()
+  try {
+    const userId = req.user._id
+    const _id = req.params.id
+    const categories = await Category.find().lean()
 
-  if (!mongoose.Types.ObjectId.isValid(_id)) return res.redirect('back')
-  return Record.findOne({ _id, userId })
-    .lean()
-    .then(record => {
-      if (!record) return res.redirect('back')
-      const currentDate = dateToString(record.date)
-      res.render('edit', { record, currentDate, categories })
-    })
-    .catch(err => console.error(err))
+    if (!mongoose.Types.ObjectId.isValid(_id)) return res.redirect('back')
+    const record = await Record.findOne({ _id, userId }).lean()
+    if (!record) return res.redirect('back')
+    const currentDate = dateToString(record.date)
+    return res.render('edit', { record, currentDate, categories })
+  } catch (error) {
+    console.error(error)
+  }
 })
 
 // edit record
@@ -65,43 +62,31 @@ router.put('/:id', async (req, res) => {
   const validation = inputValidation(modifiedRecord)
   if (Object.values(validation).includes(false)) {
     const categories = await Category.find().lean()
-    return Record.findOne({ _id, userId })
-      .lean()
-      .then(record => {
-        const currentDate = dateToString(record.date)
-        res.render('edit', { record, currentDate, validation, categories })
-      })
-      .catch(err => console.error(err))
+    const record = await Record.findOne({ _id, userId }).lean()
+    const currentDate = dateToString(record.date)
+    return res.render('edit', { record, currentDate, validation, categories })
   } else {
-    return Record.findOne({ _id, userId })
-      .then(record => {
-        [record.name, record.category, record.date, record.amount, record.merchant] = [modifiedRecord.name, modifiedRecord.category, modifiedRecord.date, modifiedRecord.amount, modifiedRecord.merchant]
-        return record.save()
-      })
-      .then(() => {
-        req.flash('success_messages', '已成功修改支出紀錄！')
-        res.redirect('/')
-      })
-      .catch(err => console.error(err))
+    const recordFilter = { _id, userId }
+    await Record.findOneAndUpdate(recordFilter, modifiedRecord, {
+      useFindAndModify: false
+    })
+    req.flash('success_messages', '已成功修改支出紀錄！')
+    return res.redirect('/')
   }
 })
 
 // delete record
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   const userId = req.user._id
   const _id = req.params.id
   if (!mongoose.Types.ObjectId.isValid(_id)) return res.redirect('back')
-  return Record.findOne({ _id, userId })
-    .then(record => {
-      if (!record) return res.redirect('back')
-      record.isDelete = true
-      record.save()
-    })
-    .then(() => {
-      req.flash('success_messages', '已成功刪除支出紀錄！')
-      res.redirect('/')
-    })
-    .catch(err => console.error(err))
+  const record = await Record.findOne({ _id, userId })
+  if (!record) return res.redirect('back')
+  record.isDelete = true
+  record.save()
+
+  req.flash('success_messages', '已成功刪除支出紀錄！')
+  return res.redirect('/')
 })
 
 module.exports = router
