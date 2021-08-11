@@ -32,8 +32,9 @@ router.get('/register', (req, res) => {
   res.render('register')
 })
 
-router.post('/register', (req, res) => {
+router.post('/register', async (req, res) => {
   const { name, email, password, comfirmPassword } = req.body
+  // check input data
   const errors = []
   if (!name || !email || !password || !comfirmPassword) {
     errors.push({ message: '所有欄位都是必填資料。' })
@@ -49,25 +50,17 @@ router.post('/register', (req, res) => {
     })
   }
 
-  User.findOne({ email }).then((user) => {
-    if (user) {
-      errors.push({ message: '該 email 已經被註冊。' })
-      return res.render('register', { errors, name, email })
-    }
-    // 儲存雜湊密碼
-    return bcrypt
-      .genSalt(10)
-      .then((salt) => bcrypt.hash(password, salt))
-      .then((hash) =>
-        User.create({
-          name,
-          email,
-          password: hash
-        })
-      )
-      .then(() => res.redirect('/'))
-      .catch((err) => console.error(err))
-  })
+  const user = await User.findOne({ email })
+  // check user data
+  if (user) {
+    errors.push({ message: '該 email 已經被註冊。' })
+    return res.render('register', { errors, name, email })
+  }
+  // create user account with hash password
+  const salt = await bcrypt.genSalt(10)
+  const hash = await bcrypt.hash(password, salt)
+  await User.create({ name, email, password: hash })
+  return res.redirect('/users/login')
 })
 
 router.get('/logout', (req, res) => {
