@@ -29,7 +29,7 @@
 <br>
 
 ## 畫面預覽 Preview
-![alphacamp 2-3 A12 老爸的私房錢](https://user-images.githubusercontent.com/78346513/125745457-6c01be3f-adc2-470d-9983-751331114de0.png)
+![私房錢專案](https://user-images.githubusercontent.com/78346513/136331812-c19ee1b5-786d-45e2-a7c1-6db7039605d5.png)
 
 ![alphacamp 三(全) A2](https://user-images.githubusercontent.com/78346513/128588522-bce87679-408a-40e6-8638-24a97389f0a2.png)
 
