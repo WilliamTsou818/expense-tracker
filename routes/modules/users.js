@@ -3,24 +3,9 @@ const router = express.Router()
 const User = require('../../models/user')
 const passport = require('passport')
 const bcrypt = require('bcryptjs')
+const userController = require('../../controllers/userController')
 
-router.get('/login', (req, res) => {
-  const warning_msg = res.locals.warning_msg
-  const errors = req.flash('error')
-  // handle login status authenticator warning message
-  if (warning_msg.length !== 0) {
-    return res.render('login', { warning_msg })
-  }
-  // handle login error message
-  if (errors[0]) {
-    errors[0] = { message: errors[0] }
-    if (errors[0].message === 'Missing credentials') {
-      errors[0] = { message: '請輸入有效 Email 與密碼' }
-    }
-    return res.render('login', { errors })
-  }
-  return res.render('login')
-})
+router.get('/login', userController.login)
 
 router.post('/login', passport.authenticate('local', {
   successRedirect: '/',
