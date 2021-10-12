@@ -18,6 +18,16 @@ const userController = {
     } catch (error) {
       next(error)
     }
+  },
+
+  logout: async (req, res, next) => {
+    try {
+      req.logout()
+      req.flash('success_msg', '您已成功登出。')
+      res.redirect('/users/login')
+    } catch (error) {
+      next(error)
+    }
   }
 }
 
