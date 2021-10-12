@@ -5,7 +5,7 @@ const passport = require('passport')
 const bcrypt = require('bcryptjs')
 const userController = require('../../controllers/userController')
 
-router.get('/login', userController.login)
+router.get('/login', userController.getLoginPage)
 
 router.post('/login', passport.authenticate('local', {
   successRedirect: '/',

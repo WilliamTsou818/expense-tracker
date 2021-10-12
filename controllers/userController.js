@@ -4,7 +4,7 @@ const passport = require('passport')
 const bcrypt = require('bcryptjs')
 
 const userController = {
-  login: async (req, res, next) => {
+  getLoginPage: async (req, res, next) => {
     try {
       const warning_msg = res.locals.warning_msg
       const errors = req.flash('error')
