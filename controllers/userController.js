@@ -20,6 +20,14 @@ const userController = {
     }
   },
 
+  getRegisterPage: async (req, res, next) => {
+    try {
+      return res.render('register')
+    } catch (error) {
+      next(error)
+    }
+  },
+
   logout: async (req, res, next) => {
     try {
       req.logout()

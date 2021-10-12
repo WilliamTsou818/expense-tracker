@@ -13,9 +13,7 @@ router.post('/login', passport.authenticate('local', {
   failureFlash: true
 }))
 
-router.get('/register', (req, res) => {
-  res.render('register')
-})
+router.get('/register', userController.getRegisterPage)
 
 router.post('/register', async (req, res) => {
   const { name, email, password, comfirmPassword } = req.body
