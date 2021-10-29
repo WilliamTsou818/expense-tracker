@@ -1,8 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
-const router = express.Router()
 const recordService = require('../services/recordService')
-const { dateToString, inputValidation } = require('../public/javascripts/tools')
+const { dateToString } = require('../public/javascripts/tools')
 
 const recordController = {
   getNewRecordPage: async (req, res, next) => {
@@ -78,6 +77,27 @@ const recordController = {
 
       // Success to modify the record 
       req.flash('success_messages', putRecordResult.message)
+      return res.redirect('/')
+    } catch (error) {
+      next(error)
+    }
+  },
+
+  deleteRecord: async (req, res, next) => {
+    try {
+      const userId = req.user._id
+      const _id = req.params.id
+      if (!mongoose.Types.ObjectId.isValid(_id)) return res.redirect('back')
+
+      // Check if the record exists
+      const delRecordResult = await recordService.deleteRecord(_id, userId)
+      if (delRecordResult.status === 'error') {
+        req.flash('warning_messages', delRecordResult.message)
+        return res.redirect('/')
+      }
+      
+      // Success to delete record
+      req.flash('success_messages', delRecordResult.message)
       return res.redirect('/')
     } catch (error) {
       next(error)

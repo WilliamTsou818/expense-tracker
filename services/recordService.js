@@ -1,5 +1,4 @@
 const express = require('express')
-const router = express.Router()
 const Record = require('../models/record')
 const Category = require('../models/category')
 const { inputValidation } = require('../public/javascripts/tools')
@@ -45,6 +44,15 @@ const recordService = {
       useFindAndModify: false
     })
     return { status: 'success', message: '已成功修改支出紀錄！' }
+  },
+
+  deleteRecord: async (_id, userId) => {
+    const record = await Record.findOne({ _id, userId })
+    if (!record) return { status: 'error', message: '未找到支出紀錄' }
+
+    record.isDelete = true
+    record.save()
+    return { status: 'success', message: '已成功刪除支出紀錄！' }
   }
 }
 

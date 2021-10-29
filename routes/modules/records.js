@@ -19,17 +19,6 @@ router.get('/:id', recordController.getEditPage)
 router.put('/:id', recordController.putRecord)
 
 // delete record
-router.delete('/:id', async (req, res) => {
-  const userId = req.user._id
-  const _id = req.params.id
-  if (!mongoose.Types.ObjectId.isValid(_id)) return res.redirect('back')
-  const record = await Record.findOne({ _id, userId })
-  if (!record) return res.redirect('back')
-  record.isDelete = true
-  record.save()
-
-  req.flash('success_messages', '已成功刪除支出紀錄！')
-  return res.redirect('/')
-})
+router.delete('/:id', recordController.deleteRecord)
 
 module.exports = router
