@@ -10,28 +10,7 @@ const recordController = require('../../controllers/recordController')
 router.get('/new', recordController.getNewRecordPage)
 
 // add new record
-router.post('/new', async (req, res) => {
-  const userId = req.user._id
-  const record = req.body
-  const validation = inputValidation(record)
-  if (Object.values(validation).includes(false)) {
-    let today = new Date()
-    today = dateToString(today)
-    const categories = await Category.find().lean()
-    res.render('new', { validation, today, record, categories })
-  } else {
-    await Record.create({
-      name: record.name,
-      date: record.date,
-      category: record.category,
-      amount: record.amount,
-      merchant: record.merchant,
-      userId
-    })
-    req.flash('success_messages', '已成功建立支出紀錄！')
-    return res.redirect('/')
-  }
-})
+router.post('/new', recordController.postNewRecord)
 
 // edit page
 router.get('/:id', async (req, res) => {

@@ -13,6 +13,30 @@ const recordController = {
     } catch (error) {
       next(error)
     }
+  },
+
+  postNewRecord: async (req, res, next) => {
+    try {
+      const userId = req.user._id
+      // Check inputs are valid or create new record
+      const postRecordResult = await recordService.postRecord(req.body, userId)
+      if (postRecordResult.status === 'error') {
+        const today = dateToString(new Date())
+        const categories = await recordService.getCategories()
+        return res.render('new', {
+          validation: postRecordResult.validation,
+          today,
+          record: req.body,
+          categories
+        })
+      }
+
+      // success to create new record
+      req.flash('success_messages', postRecordResult.message)
+      return res.redirect('/')
+    } catch (error) {
+      next(error)
+    }
   }
 }
 
