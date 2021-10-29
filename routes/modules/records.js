@@ -13,21 +13,7 @@ router.get('/new', recordController.getNewRecordPage)
 router.post('/new', recordController.postNewRecord)
 
 // edit page
-router.get('/:id', async (req, res) => {
-  try {
-    const userId = req.user._id
-    const _id = req.params.id
-    const categories = await Category.find().lean()
-
-    if (!mongoose.Types.ObjectId.isValid(_id)) return res.redirect('back')
-    const record = await Record.findOne({ _id, userId }).lean()
-    if (!record) return res.redirect('back')
-    const currentDate = dateToString(record.date)
-    return res.render('edit', { record, currentDate, categories })
-  } catch (error) {
-    console.error(error)
-  }
-})
+router.get('/:id', recordController.getEditPage)
 
 // edit record
 router.put('/:id', async (req, res) => {

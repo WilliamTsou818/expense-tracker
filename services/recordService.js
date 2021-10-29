@@ -27,6 +27,10 @@ const recordService = {
       userId
     })
     return { status: 'success', message: '已成功建立支出紀錄！' }
+  },
+
+  getRecord: async (_id, userId) => {
+    return await Record.findOne({ _id, userId }).lean()
   }
 }
 

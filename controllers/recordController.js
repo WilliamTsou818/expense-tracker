@@ -37,6 +37,24 @@ const recordController = {
     } catch (error) {
       next(error)
     }
+  },
+
+  getEditPage: async (req, res, next) => {
+    try {
+      const userId = req.user._id
+      const _id = req.params.id
+      // Check param id is valid mongo object id
+      if (!mongoose.Types.ObjectId.isValid(_id)) return res.redirect('back')
+      // Check if the record exists
+      const record = await recordService.getRecord(_id, userId)
+      if (!record) return res.redirect('back')
+      
+      const categories = await recordService.getCategories()
+      const currentDate = dateToString(record.date)
+      return res.render('edit', { record, currentDate, categories })
+    } catch (error) {
+      next(error)
+    }
   }
 }
 
