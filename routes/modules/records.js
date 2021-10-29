@@ -4,14 +4,10 @@ const router = express.Router()
 const Record = require('../../models/record')
 const Category = require('../../models/category')
 const { dateToString, inputValidation } = require('../../public/javascripts/tools')
+const recordController = require('../../controllers/recordController')
 
 // new page
-router.get('/new', async (req, res) => {
-  let today = new Date()
-  const categories = await Category.find().lean()
-  today = dateToString(today)
-  return res.render('new', { today, categories })
-})
+router.get('/new', recordController.getNewRecordPage)
 
 // add new record
 router.post('/new', async (req, res) => {
