@@ -2,6 +2,8 @@ const express = require('express')
 const router = express.Router()
 const passport = require('passport')
 const bcrypt = require('bcryptjs')
+const { registerInputValidation } = require('../public/javascripts/tools')
+const userService = require('../services/userService')
 
 const userController = {
   getLoginPage: async (req, res, next) => {
@@ -23,6 +25,38 @@ const userController = {
   getRegisterPage: async (req, res, next) => {
     try {
       return res.render('register')
+    } catch (error) {
+      next(error)
+    }
+  },
+
+  register: async (req, res, next) => {
+    try {
+      const { name, email } = req.body
+      const errors = registerInputValidation(req.body)
+      // If inputs are invalid, return errors
+      if (errors.length) {
+        return res.render('register', {
+          errors,
+          name,
+          email
+        })
+      }
+      
+      const registerResult = await userService.register(req.body)
+      // Register failed
+      if (registerResult.status === 'error') {
+        errors.push(registerResult.message)
+        return res.render('register', {
+          errors,
+          name,
+          email
+        })
+      }
+
+      // Register success
+      req.flash('success_msg', registerResult.message)
+      return res.redirect('/users/login')
     } catch (error) {
       next(error)
     }

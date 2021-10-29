@@ -29,10 +29,10 @@ const toolsFunction = {
     
     const errors = []
     if (!name || !email || !password || !comfirmPassword) {
-      errors.push({ message: '所有欄位都是必填資料。' })
+      errors.push('所有欄位都是必填資料。')
     }
     if (password !== comfirmPassword) {
-      errors.push({ message: '密碼與確認密碼不相符。' })
+      errors.push('密碼與確認密碼不相符。')
     }
     
     return errors
