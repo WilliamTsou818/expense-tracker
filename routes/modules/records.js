@@ -16,25 +16,7 @@ router.post('/new', recordController.postNewRecord)
 router.get('/:id', recordController.getEditPage)
 
 // edit record
-router.put('/:id', async (req, res) => {
-  const userId = req.user._id
-  const _id = req.params.id
-  const modifiedRecord = req.body
-  const validation = inputValidation(modifiedRecord)
-  if (Object.values(validation).includes(false)) {
-    const categories = await Category.find().lean()
-    const record = await Record.findOne({ _id, userId }).lean()
-    const currentDate = dateToString(record.date)
-    return res.render('edit', { record, currentDate, validation, categories })
-  } else {
-    const recordFilter = { _id, userId }
-    await Record.findOneAndUpdate(recordFilter, modifiedRecord, {
-      useFindAndModify: false
-    })
-    req.flash('success_messages', '已成功修改支出紀錄！')
-    return res.redirect('/')
-  }
-})
+router.put('/:id', recordController.putRecord)
 
 // delete record
 router.delete('/:id', async (req, res) => {

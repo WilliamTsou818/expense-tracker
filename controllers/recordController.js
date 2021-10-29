@@ -31,7 +31,7 @@ const recordController = {
         })
       }
 
-      // success to create new record
+      // Success to create new record
       req.flash('success_messages', postRecordResult.message)
       return res.redirect('/')
     } catch (error) {
@@ -52,6 +52,33 @@ const recordController = {
       const categories = await recordService.getCategories()
       const currentDate = dateToString(record.date)
       return res.render('edit', { record, currentDate, categories })
+    } catch (error) {
+      next(error)
+    }
+  },
+
+  putRecord: async (req, res, next) => {
+    try {
+      const userId = req.user._id
+      const _id = req.params.id
+      const recordFilter = { _id, userId }
+      const putRecordResult = await recordService.putRecord(req.body, recordFilter)
+      // Check if inputs are valid or put the record successfully
+      if (putRecordResult.status === 'error') {
+        const record = await recordService.getRecord(_id, userId)
+        const categories = await recordService.getCategories()
+        const currentDate = dateToString(record.date)
+        return res.render('edit', {
+          record,
+          currentDate,
+          validation: putRecordResult.validation,
+          categories
+        })
+      }
+
+      // Success to modify the record 
+      req.flash('success_messages', putRecordResult.message)
+      return res.redirect('/')
     } catch (error) {
       next(error)
     }

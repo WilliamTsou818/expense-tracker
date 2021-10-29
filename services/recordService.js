@@ -31,6 +31,20 @@ const recordService = {
 
   getRecord: async (_id, userId) => {
     return await Record.findOne({ _id, userId }).lean()
+  },
+
+  putRecord: async (record, recordFilter) => {
+    // Check inputs are valid
+    const validation = inputValidation(record)
+    if (Object.values(validation).includes(false)) {
+      return { status: 'error', validation }
+    }
+    
+    // Modify record
+    await Record.findOneAndUpdate(recordFilter, record, {
+      useFindAndModify: false
+    })
+    return { status: 'success', message: '已成功修改支出紀錄！' }
   }
 }
 
