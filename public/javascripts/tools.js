@@ -22,6 +22,20 @@ const toolsFunction = {
     merchant.trim().length === 0 ? validationResults.merchant = false : ''
 
     return validationResults
+  },
+
+  registerInputValidation (data) {
+    const { name, email, password, comfirmPassword } = data
+    
+    const errors = []
+    if (!name || !email || !password || !comfirmPassword) {
+      errors.push({ message: '所有欄位都是必填資料。' })
+    }
+    if (password !== comfirmPassword) {
+      errors.push({ message: '密碼與確認密碼不相符。' })
+    }
+    
+    return errors
   }
 }
 
