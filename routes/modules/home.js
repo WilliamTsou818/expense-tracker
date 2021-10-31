@@ -3,29 +3,9 @@ const router = express.Router()
 const Record = require('../../models/record')
 const Category = require('../../models/category')
 const { dateToString } = require('../../public/javascripts/tools')
+const homeController = require('../../controllers/homeController')
 
-router.get('/', async (req, res) => {
-  try {
-    const userId = req.user._id
-    // handle categories data
-    const categories = await Category.find().lean()
-    const categoryData = {}
-    categories.forEach(category => categoryData[category.categoryName] = category.categoryIcon)
-
-    // handle records data
-    const records = await Record.find({ userId, isDelete: false }).sort({ date: 'asc' }).lean()
-
-    let totalAmount = 0
-    records.forEach(record => {
-      record.date = dateToString(record.date)
-      totalAmount += record.amount
-      record.categoryIcon = categoryData[record.category]
-    })
-    return res.render('index', { records, totalAmount, categories })
-  } catch (error) {
-    console.error(error)
-  }
-})
+router.get('/', homeController.getHomePage)
 
 // filter by category or month
 router.get('/filter', async (req, res) => {
