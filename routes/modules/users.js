@@ -7,11 +7,7 @@ const userController = require('../../controllers/userController')
 
 router.get('/login', userController.getLoginPage)
 
-router.post('/login', passport.authenticate('local', {
-  successRedirect: '/',
-  failureRedirect: '/users/login',
-  failureFlash: true
-}))
+router.post('/login', userController.postLogin)
 
 router.get('/register', userController.getRegisterPage)
 

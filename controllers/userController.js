@@ -22,6 +22,18 @@ const userController = {
     }
   },
 
+  postLogin: async (req, res, next) => {
+    try {
+      return passport.authenticate('local', {
+        successRedirect: '/',
+        failureRedirect: '/users/login',
+        failureFlash: true
+      })(req, res)
+    } catch (error) {
+      next(error)
+    }
+  },
+
   getRegisterPage: async (req, res, next) => {
     try {
       return res.render('register')
