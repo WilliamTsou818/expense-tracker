@@ -1,23 +1,14 @@
 const express = require('express')
 const router = express.Router()
 const passport = require('passport')
+const authController = require('../../controllers/authController')
 
-router.get('/facebook', passport.authenticate('facebook', {
-  scope: ['email', 'public_profile']
-}))
+router.get('/facebook', authController.getFbLogin)
 
-router.get('/facebook/callback', passport.authenticate('facebook', {
-  successRedirect: '/',
-  failureRedirect: '/users/login'
-}))
+router.get('/facebook/callback', authController.fbLoginCallback)
 
-router.get('/google', passport.authenticate('google', {
-  scope: ['email', 'profile']
-}))
+router.get('/google', authController.getGoogleLogin)
 
-router.get('/google/callback', passport.authenticate('google', {
-  successRedirect: '/',
-  failureRedirect: '/users/login'
-}))
+router.get('/google/callback', authController.googleLoginCallback)
 
 module.exports = router
