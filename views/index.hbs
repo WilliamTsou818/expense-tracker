@@ -1,34 +1,42 @@
 <div class="container">
   <div class="d-flex flex-column">
-    <!-- dropdown for category -->
-    <form action="/filter" method="GET" class="d-flex mt-3">
-      <div class="input-group filter-category mb-3 container-fluid">
-        <select class="form-control ml-2" id="record-category" name="category" onchange="submit()">
-          <option value="">所有分類</option>
-          {{#each categories}}
-          <option value="{{ this.categoryName }}" {{#is this.categoryName ../categoryFiltered }} selected {{/is}}>{{ this.categoryName }}</option>
-          {{/each}}
-        </select>
-      </div>
-      <!-- dropdown for month -->
-      <div class="input-group filter-month mb-3 container-fluid">
-        <select class="form-control ml-2" id="record-month" name="month" onchange="submit()">
-          <option value="">所有月份</option>
-          <option value="1" {{#is monthFiltered '1' }} selected {{/is}}>一月</option>
-          <option value="2" {{#is monthFiltered '2' }} selected {{/is}}>二月</option>
-          <option value="3" {{#is monthFiltered '3' }} selected {{/is}}>三月</option>
-          <option value="4" {{#is monthFiltered '4' }} selected {{/is}}>四月</option>
-          <option value="5" {{#is monthFiltered '5' }} selected {{/is}}>五月</option>
-          <option value="6" {{#is monthFiltered '6' }} selected {{/is}}>六月</option>
-          <option value="7" {{#is monthFiltered '7' }} selected {{/is}}>七月</option>
-          <option value="8" {{#is monthFiltered '8' }} selected {{/is}}>八月</option>
-          <option value="9" {{#is monthFiltered '9' }} selected {{/is}}>九月</option>
-          <option value="10" {{#is monthFiltered '10' }} selected {{/is}}>十月</option>
-          <option value="11" {{#is monthFiltered '11' }} selected {{/is}}>十一月</option>
-          <option value="12" {{#is monthFiltered '12' }} selected {{/is}}>十二月</option>
-        </select>
-      </div>
-    </form>
+    <div class="d-flex justify-content-center">
+      <!-- dropdown for category -->
+      <form action="/filter" method="GET" class="d-flex mt-3">
+        <div class="input-group filter-category mb-3 container-fluid">
+          <select class="form-control ml-2" id="record-category" name="category" onchange="submit()">
+            <option value="">所有分類</option>
+            {{#each categories}}
+            <option value="{{ this.categoryName }}" {{#is this.categoryName ../categoryFiltered }} selected {{/is}}>{{ this.categoryName }}</option>
+            {{/each}}
+          </select>
+        </div>
+        <!-- dropdown for month -->
+        <div class="input-group filter-month mb-3 container-fluid">
+          <select class="form-control ml-2" id="record-month" name="month" onchange="submit()">
+            <option value="">所有月份</option>
+            <option value="1" {{#is monthFiltered '1' }} selected {{/is}}>一月</option>
+            <option value="2" {{#is monthFiltered '2' }} selected {{/is}}>二月</option>
+            <option value="3" {{#is monthFiltered '3' }} selected {{/is}}>三月</option>
+            <option value="4" {{#is monthFiltered '4' }} selected {{/is}}>四月</option>
+            <option value="5" {{#is monthFiltered '5' }} selected {{/is}}>五月</option>
+            <option value="6" {{#is monthFiltered '6' }} selected {{/is}}>六月</option>
+            <option value="7" {{#is monthFiltered '7' }} selected {{/is}}>七月</option>
+            <option value="8" {{#is monthFiltered '8' }} selected {{/is}}>八月</option>
+            <option value="9" {{#is monthFiltered '9' }} selected {{/is}}>九月</option>
+            <option value="10" {{#is monthFiltered '10' }} selected {{/is}}>十月</option>
+            <option value="11" {{#is monthFiltered '11' }} selected {{/is}}>十一月</option>
+            <option value="12" {{#is monthFiltered '12' }} selected {{/is}}>十二月</option>
+          </select>
+        </div>
+      </form>
+
+      <!-- button for cleaning filter condition -->
+      <form action="/" method="get" class="d-flex alien-items-center my-3">
+        <button class="btn btn-outline-danger" type="submit">清除篩選</button>
+      </form>
+    </div>
+    
 
     <!-- display flash message -->
     {{#if success_messages}}
