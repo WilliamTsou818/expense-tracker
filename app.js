@@ -15,6 +15,10 @@ if (process.env.NODE_ENV !== 'production') {
 
 require('./config/mongoose')
 
+// include redis
+const redis = require('redis')
+const redisClient = redis.createClient()
+
 // express related variables
 const PORT = process.env.PORT
 const app = express()
