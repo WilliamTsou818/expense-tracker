@@ -15,9 +15,19 @@ if (process.env.NODE_ENV !== 'production') {
 
 require('./config/mongoose')
 
-// include redis
+// include redis and set redis config
 const redis = require('redis')
 const redisClient = redis.createClient()
+const connectRedis = require('connect-redis')
+const RedisStore = connectRedis(session)
+
+redisClient.on('error', function (err) {
+  console.log(`Could not connect to redis, error message: ${err}`)
+})
+
+redisClient.on('connect', function (err) {
+  console.log('Connect to redis successfully')
+})
 
 // express related variables
 const PORT = process.env.PORT
@@ -33,11 +43,17 @@ app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 app.use(express.static('public'))
 
+// set session middleware
 app.use(session({
+  store: new RedisStore({ client: redisClient }),
   secret: process.env.SESSION_SECRET,
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 1000 * 60
+  }
 }))
+
 app.use(flash())
 app.use((req, res, next) => {
   res.locals.success_messages = req.flash('success_messages')
