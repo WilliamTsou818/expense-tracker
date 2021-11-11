@@ -7,3 +7,4 @@ deploy:
   provider: heroku
   edge: true
   app: tranquil-ridge-17552
+  api_key: $HEROKU_API_KEY
