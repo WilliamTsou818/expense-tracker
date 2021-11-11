@@ -17,7 +17,7 @@ require('./config/mongoose')
 
 // include redis and set redis config
 const redis = require('redis')
-const redisUrl = process.env.REDIS_URL || ''
+const redisUrl = process.env.REDIS_TLS_URL || process.env.REDIS_URL
 const redisClient = redis.createClient(redisUrl)
 const connectRedis = require('connect-redis')
 const RedisStore = connectRedis(session)
